@@ -1,0 +1,6 @@
+{
+  "$schema": "node_modules/opennextjs-cloudflare/wrangler.jsonc",
+  "name": "coders-eye-web",
+  "compatibility_date": "2026-07-01",
+  "compatibility_flags": ["nodejs_compat"]
+}
