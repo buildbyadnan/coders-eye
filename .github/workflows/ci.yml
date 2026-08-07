@@ -1,0 +1,167 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ─────────────────────────────────────────────
+  # Typecheck — matrix across Node 22 + 24
+  # ─────────────────────────────────────────────
+  typecheck:
+    name: Typecheck (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+
+  # ─────────────────────────────────────────────
+  # Build — bundle + verify tarball
+  # ─────────────────────────────────────────────
+  build:
+    name: Build CLI bundle
+    runs-on: ubuntu-latest
+    needs: typecheck
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build bundle
+        run: npx nx build coders-eye
+      - name: Verify dist output
+        run: |
+          test -f apps/cli/dist/index.js
+          test -f apps/cli/dist/index.js.map
+          grep -q "^#!/usr/bin/env node" apps/cli/dist/index.js
+      - name: Verify bin script
+        run: grep -q "import.*dist/index.js" apps/cli/bin/coders-eye
+      - name: Verify tarball
+        working-directory: apps/cli
+        run: npm pack --dry-run
+
+  # ─────────────────────────────────────────────
+  # Release — publish to npm (push to main only)
+  # ─────────────────────────────────────────────
+  release:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    needs: build
+    if: >-
+      github.event_name == 'push'
+      && !contains(github.event.head_commit.message, 'chore(release)')
+      && !contains(github.event.head_commit.message, 'skip ci')
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      - run: npm ci
+
+      - name: Build bundle
+        run: npx nx build coders-eye
+
+      - name: Verify bundle
+        run: |
+          test -f apps/cli/dist/index.js
+          grep -q "^#!/usr/bin/env node" apps/cli/dist/index.js
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Get current version
+        id: version
+        run: |
+          VERSION=$(node -p "require('./apps/cli/package.json').version")
+          echo "current=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Check if version exists on npm
+        id: check-npm
+        run: |
+          if npm view "coders-eye@${{ steps.version.outputs.current }}" version 2>/dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Bump patch version
+        if: steps.check-npm.outputs.exists == 'true'
+        working-directory: apps/cli
+        run: |
+          npm version patch --no-git-tag-version
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          echo "Bumped to $NEW_VERSION"
+
+      - name: Sync root package.json version
+        if: steps.check-npm.outputs.exists == 'true'
+        run: |
+          CLI_VERSION=$(node -p "require('./apps/cli/package.json').version")
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            pkg.version = '$CLI_VERSION';
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
+
+      - name: Get final version for tag
+        id: final
+        run: |
+          VERSION=$(node -p "require('./apps/cli/package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Rebuild bundle with new version
+        if: steps.check-npm.outputs.exists == 'true'
+        run: npx nx build coders-eye
+
+      - name: Publish to npm
+        working-directory: apps/cli
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create git tag
+        run: |
+          git tag "cli-v${{ steps.final.outputs.version }}"
+
+      - name: Commit version bump and push
+        if: steps.check-npm.outputs.exists == 'true'
+        run: |
+          git add apps/cli/package.json package.json
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          git commit -m "chore(release): cli@${{ steps.final.outputs.version }} [skip ci]"
+          git push origin main --follow-tags
+
+      - name: Summary
+        run: |
+          echo "## Published" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Package: \`coders-eye@${{ steps.final.outputs.version }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Tag: \`cli-v${{ steps.final.outputs.version }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- npm: https://www.npmjs.com/package/coders-eye" >> "$GITHUB_STEP_SUMMARY"

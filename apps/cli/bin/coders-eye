@@ -1,2 +1,2 @@
-#!/bin/bash
-exec node "$(dirname "$0")/../dist/index.js" "$@"
+#!/usr/bin/env node
+import("../dist/index.js");

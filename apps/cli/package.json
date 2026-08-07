@@ -6,7 +6,7 @@
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
-    "coders-eye": "./bin/coders-eye"
+    "coders-eye": "bin/coders-eye"
   },
   "files": [
     "bin/",
