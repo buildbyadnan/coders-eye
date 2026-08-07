@@ -1,0 +1,50 @@
+{
+  "name": "coders-eye",
+  "version": "0.1.0",
+  "description": "Cross-repository AI code review for GitHub PRs — powered by Claude Code",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "coders-eye": "./bin/coders-eye"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "code-review",
+    "github",
+    "pull-request",
+    "ai",
+    "claude",
+    "cross-repo",
+    "cli"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "nx": {
+    "targets": {
+      "typecheck": {
+        "command": "tsc --noEmit -p tsconfig.json",
+        "options": {
+          "cwd": "{projectRoot}"
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@repo/claude": "*",
+    "@repo/context": "*",
+    "@repo/github": "*",
+    "@repo/indexer": "*",
+    "@repo/review": "*",
+    "@repo/types": "*",
+    "tsx": "^4.23.10"
+  }
+}
