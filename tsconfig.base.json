@@ -1,0 +1,31 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": true,
+    "moduleResolution": "bundler",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "types": ["node"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@repo/github": ["packages/github/src/index.ts"],
+      "@repo/indexer": ["packages/indexer/src/index.ts"],
+      "@repo/context": ["packages/context/src/index.ts"],
+      "@repo/claude": ["packages/claude/src/index.ts"],
+      "@repo/review": ["packages/review/src/index.ts"],
+      "@repo/http": ["packages/http/src/index.ts"],
+      "@repo/types": ["packages/types/src/index.ts"],
+      "@repo/api-endpoints": ["packages/api-endpoints/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

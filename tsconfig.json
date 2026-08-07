@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist"
+  },
+  "include": [],
+  "references": [
+    { "path": "packages/types" },
+    { "path": "packages/http" },
+    { "path": "packages/api-endpoints" },
+    { "path": "packages/github" },
+    { "path": "packages/indexer" },
+    { "path": "packages/context" },
+    { "path": "packages/claude" },
+    { "path": "packages/review" },
+    { "path": "apps/cli" },
+    { "path": "apps/server" },
+    { "path": "apps/web" }
+  ]
+}
