@@ -9,8 +9,9 @@ CodersEye reviews your pull requests with context from other repositories in you
 - **Cross-repository awareness** — Understands code patterns across your entire org
 - **Claude Code powered** — Uses your Claude Code subscription (no API key needed)
 - **Local-first** — Your code stays on your machine, nothing sent to external servers
-- **Fast** — SQLite-backed index with symbol extraction for instant context lookup
-- **CLI + Bot** — Use as a CLI tool or run as a webhook listener
+- **SQLite index** — Fast symbol extraction and lookup with zero configuration
+- **Structured output** — JSON-formatted reviews with file, line, severity, and suggestions
+- **Multi-language** — TypeScript, JavaScript, Python, Go, Ruby, Rust, Java
 
 ## Quick Start
 
@@ -18,7 +19,7 @@ CodersEye reviews your pull requests with context from other repositories in you
 # Install
 npm install -g coders-eye
 
-# Setup
+# Setup (enter GitHub token, org name, Claude path)
 coders-eye init
 
 # Index your org's repos
@@ -26,6 +27,9 @@ coders-eye index
 
 # Review a PR
 coders-eye review https://github.com/yourorg/yourrepo/pull/42
+
+# Post review as GitHub PR comment
+coders-eye review https://github.com/yourorg/yourrepo/pull/42 --post
 ```
 
 ## Commands
@@ -55,43 +59,23 @@ Config is stored at `~/.coders-eye/config.json`:
   "github_token": "ghp_...",
   "org": "your-org",
   "claude_path": "claude",
-  "data_dir": "~/.coders-eye/data",
-  "cache_ttl_hours": 24
+  "data_dir": "~/.coders-eye/data"
 }
 ```
 
-## Architecture
+## Prerequisites
 
-```
-coders-eye/
-├── packages/
-│   ├── github/      GitHub API client
-│   ├── indexer/      Repo cloning + symbol extraction
-│   ├── context/      Cross-repo context builder
-│   ├── claude/       Claude Code CLI integration
-│   └── review/       Review orchestration
-├── apps/
-│   ├── cli/          The CLI tool (npm package)
-│   └── server/       Hono.js webhook handler
-```
+- Node.js >= 22
+- Git
+- Claude Code CLI ([install](https://docs.anthropic.com/en/docs/claude-code))
+- GitHub Personal Access Token ([generate](https://github.com/settings/tokens))
 
-## Development
+## Links
 
-```bash
-# Clone
-git clone https://github.com/coders-eye/coders-eye.git
-cd coders-eye
-
-# Install dependencies
-npm install
-
-# Build all packages
-npx nx run-many -t build
-
-# Typecheck
-npx nx run-many -t typecheck
-```
+- [GitHub](https://github.com/buildbyadnan/coders-eye)
+- [Issues](https://github.com/buildbyadnan/coders-eye/issues)
+- [Architecture](https://github.com/buildbyadnan/coders-eye/blob/main/Architecture.md)
 
 ## License
 
-MIT
+[MIT](https://github.com/buildbyadnan/coders-eye/blob/main/LICENSE)

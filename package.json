@@ -1,6 +1,6 @@
 {
   "name": "coders-eye",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Cross-repository AI code review for GitHub PRs — powered by Claude Code",
   "license": "MIT",
   "scripts": {

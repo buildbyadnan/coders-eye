@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Node.js >= 20
+- Node.js >= 22
 - Git
 - Claude Code CLI installed and authenticated
 - GitHub Personal Access Token
