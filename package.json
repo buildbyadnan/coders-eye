@@ -4,13 +4,15 @@
   "description": "Cross-repository AI code review for GitHub PRs — powered by Claude Code",
   "license": "MIT",
   "scripts": {
+    "build:cli": "npx nx build cli",
+    "build": "nx run-many -t build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "npx vitest run",
     "typecheck": "nx run-many -t typecheck",
-    "build": "nx run-many -t build"
+    "cli": "bash apps/cli/bin/coders-eye"
   },
   "private": true,
   "engines": {
@@ -30,6 +32,7 @@
     "nx": "23.0.1",
     "prettier": "^3.9.4",
     "tslib": "^2.3.0",
+    "tsup": "^8.5.1",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.62.1",
     "vitest": "^3.2.1"

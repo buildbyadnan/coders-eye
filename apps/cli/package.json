@@ -4,15 +4,21 @@
   "description": "Cross-repository AI code review for GitHub PRs — powered by Claude Code",
   "license": "MIT",
   "type": "module",
+  "main": "./dist/index.js",
   "bin": {
     "coders-eye": "./bin/coders-eye"
   },
   "files": [
     "bin/",
-    "src/",
+    "dist/",
     "README.md",
     "LICENSE"
   ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
   "engines": {
     "node": ">=22"
   },
@@ -35,16 +41,21 @@
         "options": {
           "cwd": "{projectRoot}"
         }
+      },
+      "build": {
+        "command": "npx tsup",
+        "options": {
+          "cwd": "{projectRoot}"
+        }
       }
     }
   },
   "dependencies": {
-    "@repo/claude": "*",
-    "@repo/context": "*",
-    "@repo/github": "*",
-    "@repo/indexer": "*",
-    "@repo/review": "*",
-    "@repo/types": "*",
-    "tsx": "^4.23.10"
+    "better-sqlite3": "^13.0.3"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "tsup": "^8.0.0",
+    "typescript": "~6.0.3"
   }
 }

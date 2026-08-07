@@ -1,2 +1,2 @@
 #!/bin/bash
-exec node --import tsx "$(dirname "$0")/../src/index.ts" "$@"
+exec node "$(dirname "$0")/../dist/index.js" "$@"

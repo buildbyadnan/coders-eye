@@ -1,6 +1,6 @@
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { existsSync, mkdirSync, rmdirSync } from "node:fs";
+import { existsSync, mkdirSync, rmSync } from "node:fs";
 import { join } from "node:path";
 
 const execFileAsync = promisify(execFile);
@@ -57,7 +57,7 @@ export class RepoCloner {
         repoDir,
       ], { timeout: 120_000 });
     } catch (error) {
-      try { rmdirSync(repoDir, { recursive: true }); } catch {}
+      try { rmSync(repoDir, { recursive: true }); } catch {}
       throw error;
     }
 

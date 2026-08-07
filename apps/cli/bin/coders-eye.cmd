@@ -6,5 +6,4 @@ EXIT /b
 :start
 SETLOCAL
 CALL :find_dp0
-
-node --import tsx "%dp0%\coders-eye" %*
+node "%dp0%\..\dist\index.js" %*

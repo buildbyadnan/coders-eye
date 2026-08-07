@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import { initCommand } from "./commands/init.js";
 import { indexCommand } from "./commands/index.js";
 import { reviewCommand } from "./commands/review.js";
