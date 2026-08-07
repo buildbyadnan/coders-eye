@@ -31,6 +31,15 @@
     "cross-repo",
     "cli"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/buildbyadnan/coders-eye.git",
+    "directory": "apps/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/buildbyadnan/coders-eye/issues"
+  },
+  "homepage": "https://github.com/buildbyadnan/coders-eye#readme",
   "publishConfig": {
     "access": "public"
   },
