@@ -1,0 +1,26 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "coders-eye-server",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-07-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "coders-eye-db",
+      "database_id": "placeholder-replace-with-actual-id"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "placeholder-replace-with-actual-id"
+    }
+  ],
+  "vars": {
+    "ENVIRONMENT": "production"
+  }
+}

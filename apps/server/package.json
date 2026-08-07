@@ -1,0 +1,32 @@
+{
+  "name": "@repo/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "nx": {
+    "targets": {
+      "typecheck": {
+        "command": "tsc --noEmit -p tsconfig.json",
+        "options": {
+          "cwd": "{projectRoot}"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "deploy": "wrangler deploy --minify",
+    "dev": "wrangler dev",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
+  },
+  "dependencies": {
+    "@repo/github": "*",
+    "@repo/http": "*",
+    "@repo/types": "*",
+    "hono": "^4.12.27"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260804.1",
+    "@types/node": "^24.13.2",
+    "wrangler": "^4.106.0"
+  }
+}
