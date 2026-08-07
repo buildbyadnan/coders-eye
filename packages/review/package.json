@@ -1,0 +1,24 @@
+{
+  "name": "@repo/review",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "nx": {
+    "targets": {
+      "typecheck": {
+        "command": "tsc --noEmit -p tsconfig.json",
+        "options": {
+          "cwd": "{projectRoot}"
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@repo/github": "*",
+    "@repo/context": "*",
+    "@repo/claude": "*",
+    "@repo/types": "*"
+  }
+}
