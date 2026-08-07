@@ -12,20 +12,16 @@ concurrency:
 
 jobs:
   # ─────────────────────────────────────────────
-  # Typecheck — matrix across Node 22 + 24
+  # Typecheck
   # ─────────────────────────────────────────────
   typecheck:
-    name: Typecheck (Node ${{ matrix.node-version }})
+    name: Typecheck
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: [22, 24]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 24
           cache: npm
       - run: npm ci
       - run: npm run typecheck
@@ -41,7 +37,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
       - run: npm ci
       - name: Build bundle
@@ -78,7 +74,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
           registry-url: https://registry.npmjs.org
 
