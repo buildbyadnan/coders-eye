@@ -26,7 +26,7 @@
     "@swc/cli": "~0.8.0",
     "@swc/core": "1.15.8",
     "@swc/helpers": "0.5.18",
-    "@types/node": "^24.13.3",
+    "@types/node": "^26.1.2",
     "eslint": "^10.6.0",
     "eslint-config-prettier": "^10.1.8",
     "nx": "23.0.1",
