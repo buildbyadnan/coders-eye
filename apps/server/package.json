@@ -22,7 +22,7 @@
     "@repo/github": "*",
     "@repo/http": "*",
     "@repo/types": "*",
-    "hono": "^4.12.27"
+    "hono": "^4.13.7"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260804.1",
